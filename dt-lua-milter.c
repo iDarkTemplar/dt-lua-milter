@@ -271,7 +271,6 @@ sfsistat dt_mlfi_connect(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = init_private_context(ctx);
 	if (private_context == NULL)
@@ -286,7 +285,6 @@ sfsistat dt_mlfi_connect(
 	lua_getglobal(private_context->lua, "mlfi_connect");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -294,23 +292,15 @@ sfsistat dt_mlfi_connect(
 	lua_result = lua_pcall(private_context->lua, 1, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_helo(
@@ -319,7 +309,6 @@ sfsistat dt_mlfi_helo(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -327,7 +316,6 @@ sfsistat dt_mlfi_helo(
 	lua_getglobal(private_context->lua, "mlfi_helo");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -335,23 +323,15 @@ sfsistat dt_mlfi_helo(
 	lua_result = lua_pcall(private_context->lua, 1, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_envfrom(
@@ -360,7 +340,6 @@ sfsistat dt_mlfi_envfrom(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -368,7 +347,6 @@ sfsistat dt_mlfi_envfrom(
 	lua_getglobal(private_context->lua, "mlfi_envfrom");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -384,23 +362,15 @@ sfsistat dt_mlfi_envfrom(
 	lua_result = lua_pcall(private_context->lua, lua_result, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_envrcpt(
@@ -409,7 +379,6 @@ sfsistat dt_mlfi_envrcpt(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -417,7 +386,6 @@ sfsistat dt_mlfi_envrcpt(
 	lua_getglobal(private_context->lua, "mlfi_envrcpt");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -433,23 +401,15 @@ sfsistat dt_mlfi_envrcpt(
 	lua_result = lua_pcall(private_context->lua, lua_result, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_header(
@@ -459,7 +419,6 @@ sfsistat dt_mlfi_header(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -467,7 +426,6 @@ sfsistat dt_mlfi_header(
 	lua_getglobal(private_context->lua, "mlfi_header");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -476,30 +434,21 @@ sfsistat dt_mlfi_header(
 	lua_result = lua_pcall(private_context->lua, 2, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_eoh(SMFICTX *ctx)
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -507,30 +456,21 @@ sfsistat dt_mlfi_eoh(SMFICTX *ctx)
 	lua_getglobal(private_context->lua, "mlfi_eoh");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	lua_result = lua_pcall(private_context->lua, 0, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_body(
@@ -540,7 +480,6 @@ sfsistat dt_mlfi_body(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -548,7 +487,6 @@ sfsistat dt_mlfi_body(
 	lua_getglobal(private_context->lua, "mlfi_body");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
@@ -557,30 +495,21 @@ sfsistat dt_mlfi_body(
 	lua_result = lua_pcall(private_context->lua, 2, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_eom(SMFICTX *ctx)
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -588,37 +517,27 @@ sfsistat dt_mlfi_eom(SMFICTX *ctx)
 	lua_getglobal(private_context->lua, "mlfi_eom");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	lua_result = lua_pcall(private_context->lua, 0, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_abort(SMFICTX *ctx)
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -626,30 +545,21 @@ sfsistat dt_mlfi_abort(SMFICTX *ctx)
 	lua_getglobal(private_context->lua, "mlfi_abort");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	lua_result = lua_pcall(private_context->lua, 0, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_close(SMFICTX *ctx)
@@ -667,6 +577,7 @@ sfsistat dt_mlfi_close(SMFICTX *ctx)
 		if (lua_isfunction(private_context->lua, -1) != 1)
 		{
 			destroy_private_context(private_context);
+			smfi_setpriv(ctx, NULL);
 			return dt_smfi_fail(ctx);
 		}
 
@@ -674,12 +585,14 @@ sfsistat dt_mlfi_close(SMFICTX *ctx)
 		if (lua_result != 0)
 		{
 			destroy_private_context(private_context);
+			smfi_setpriv(ctx, NULL);
 			return dt_smfi_fail(ctx);
 		}
 
 		if (lua_isnumber(private_context->lua, 1) != 1)
 		{
 			destroy_private_context(private_context);
+			smfi_setpriv(ctx, NULL);
 			return dt_smfi_fail(ctx);
 		}
 
@@ -688,7 +601,7 @@ sfsistat dt_mlfi_close(SMFICTX *ctx)
 		smfi_setpriv(ctx, NULL);
 	}
 
-	return SMFIS_CONTINUE;
+	return result;
 }
 
 sfsistat dt_mlfi_unknown(
@@ -697,7 +610,6 @@ sfsistat dt_mlfi_unknown(
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -705,37 +617,27 @@ sfsistat dt_mlfi_unknown(
 	lua_getglobal(private_context->lua, "mlfi_unknown");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	lua_result = lua_pcall(private_context->lua, 0, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_data(SMFICTX *ctx)
 {
 	struct dt_mlfi_private *private_context;
 	int lua_result;
-	sfsistat result;
 
 	private_context = (struct dt_mlfi_private *) smfi_getpriv(ctx);
 
@@ -743,30 +645,21 @@ sfsistat dt_mlfi_data(SMFICTX *ctx)
 	lua_getglobal(private_context->lua, "mlfi_data");
 	if (lua_isfunction(private_context->lua, -1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	lua_result = lua_pcall(private_context->lua, 0, 1, 0);
 	if (lua_result != 0)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
 	if (lua_isnumber(private_context->lua, 1) != 1)
 	{
-		destroy_private_context(private_context);
 		return dt_smfi_fail(ctx);
 	}
 
-	result = lua_tointeger(private_context->lua, 1);
-	if (result != SMFIS_CONTINUE)
-	{
-		destroy_private_context(private_context);
-	}
-
-	return result;
+	return lua_tointeger(private_context->lua, 1);
 }
 
 sfsistat dt_mlfi_negotiate(
@@ -785,7 +678,7 @@ sfsistat dt_mlfi_negotiate(
 
 struct smfiDesc smfilter =
 {
-	"DTFilter",	/* filter name */
+	"DTLuaFilter",	/* filter name */
 	SMFI_VERSION,	/* version code -- do not change */
 	SMFIF_NONE, /* flags */
 	dt_mlfi_connect,	/* connection info filter */
@@ -862,7 +755,7 @@ static char* read_full_file(const char *filename)
 	}
 
 	fseek(file, 0, SEEK_END);
-	long fsize = ftell(file);
+	file_size = ftell(file);
 	fseek(file, 0, SEEK_SET);  //same as rewind(f);
 
 	buffer = malloc(file_size + 1);
