@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 
 #include <sysexits.h>
@@ -874,6 +875,12 @@ int main(int argc, char **argv)
 			usage(argv[0]);
 			exit(EX_USAGE);
 		}
+	}
+
+	if (optind != argc)
+	{
+		usage(argv[0]);
+		exit(EX_USAGE);
 	}
 
 	if (!setconn)
