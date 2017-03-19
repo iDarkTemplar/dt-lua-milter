@@ -32,7 +32,7 @@
 #include <lualib.h>
 
 #ifndef DEFAULT_CONFIG_SCRIPT
-#define DEFAULT_CONFIG_SCRIPT "/etc/dt-lua-milter/default.lua"
+#define DEFAULT_CONFIG_SCRIPT CONFIG_DIR "/dt-lua-milter/default.lua"
 #endif /* DEFAULT_CONFIG_SCRIPT */
 
 const char *config_script = DEFAULT_CONFIG_SCRIPT;

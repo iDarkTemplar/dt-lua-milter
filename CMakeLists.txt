@@ -14,9 +14,12 @@ set(CPACK_GENERATOR "TBZ2")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
 set(CPACK_SOURCE_IGNORE_FILES
 	".git;build;CMakeLists.txt.user;CMakeLists.txt.user.*;TODO")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${PCC_VERSION}")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${DLM_VERSION}")
 # MUST be after CPACK_* variables.
 include(CPack)
+
+# installation directory configuration
+set(CONFIG_DIR "/etc" CACHE PATH "Config files directory")
 
 # installation directory configuration
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)")
@@ -30,8 +33,9 @@ set(DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Prefix prepended to 
 # hack to use my milter search module
 SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake_extra )
 
-#FIND_PACKAGE( Boost COMPONENTS regex REQUIRED )
-#INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+message(STATUS "System: ${CMAKE_SYSTEM_NAME}" )
+
+add_definitions(-DCONFIG_DIR=\"${CONFIG_DIR}\")
 
 if (UNIX)
 	set( CMAKE_THREAD_PREFER_PTHREAD 1 )
@@ -64,3 +68,4 @@ target_link_libraries( dt-lua-milter ${MILTER_LIBRARIES} ${LUA_LIBRARIES} ${CMAK
 
 # installation config
 install(TARGETS dt-lua-milter RUNTIME DESTINATION ${SBIN_INSTALL_DIR})
+install(FILES "scripts/default.lua"    DESTINATION "${CONFIG_DIR}/dt-lua-milter")

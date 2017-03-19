@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+
+command=/usr/sbin/dt-lua-milter
+pidfile=/var/run/dt-lua-milter.pid
+command_args="${DT_LUA_MILTER_ARGS}"
+name="configurable mta filter"
+command_background=yes
+
+depend()
+{
+	use net
+	after bootmisc modules mtab localmount
+	before mta
+}
