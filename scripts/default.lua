@@ -82,7 +82,7 @@ function parse_sender(sender_string)
 				-- no domain specified, only subaddress
 				parsed_subaddress = remaining_string
 			end
-			
+
 			if string.len(parsed_subaddress) == 0 then
 				return false
 			end
@@ -91,7 +91,7 @@ function parse_sender(sender_string)
 		-- only sender address present
 		parsed_sender = remaining_string
 	end
-	
+
 	if string.len(parsed_sender) == 0 then
 		return false
 	end
@@ -104,9 +104,45 @@ function read_login_maps(filename)
 	local file = io.open(filename, "r");
 
 	if file ~= nil then
+		local line
 		for line in file:lines() do
-			-- example: mail@localhost      mail@localhost,root@localhost,webmaster@localhost,postmaster@localhost
-			-- TODO: parse file line
+			local parsed_login, parsed_map = string.match(line, "^[%s]*([^%s,]+)[%s,]+(.+)$")
+
+			if (parsed_login ~= nil) and (parsed_map ~= nil) then
+				local parsed_login_lowercase = string.lower(parsed_login)
+
+				while string.len(parsed_map) > 0 do
+					local value, remaining_value = string.match(parsed_map, "^[%s,]*([^%s,]+)[%s,]+(.+)$")
+
+					if value ~= nil then
+						-- found match, we have current address and remainder
+
+						-- only append to list. This allows to list valid email addresses for one user on multiple lines.
+						if result_table[parsed_login_lowercase] == nil then
+							result_table[parsed_login_lowercase] = {}
+						end
+
+						result_table[parsed_login_lowercase][string.lower(value)] = true
+						parsed_map = remaining_value
+					else
+						-- no match, we may have one final value in the parsed_map
+
+						value = string.match(parsed_map, "^[%s,]*([^%s,]+)[%s,]*$")
+						if value ~= nil then
+							-- we have one value there
+
+							-- only append to list. This allows to list valid email addresses for one user on multiple lines.
+							if result_table[parsed_login_lowercase] == nil then
+								result_table[parsed_login_lowercase] = {}
+							end
+
+							result_table[parsed_login_lowercase][string.lower(value)] = true
+						end
+
+						parsed_map = ""
+					end
+				end
+			end
 		end
 
 		file:close()
@@ -149,23 +185,29 @@ function mlfi_header(header, header_value)
 		end
 
 		local final_user = parsed_user
-		
+
 		if parsed_domain ~= nil then
 			final_user = final_user .. "@" .. parsed_domain
 		end
 
-		-- TODO: check users map
-		--[[
-		local file = io.open("/tmp/dt-lua.log", "a+")
-		file:write(string.format("envelope: %s, header: %s\nenvelope: %s, sender: %s\n", tostring(sender), tostring(header_value), tostring(envelope_sender), tostring(header_sender)))
-		file:write(string.format("parsed: %s, sender: %s, subaddress: %s, domain: %s\n", tostring(parsed_ok), tostring(parsed_user), tostring(parsed_subaddress), tostring(parsed_domain)))
-		file:write(string.format("final_user: %s\n", final_user))
-		file:close()
-		]]--
-		
-		if final_user ~= envelope_sender then
+		local match_is_good = false
+
+		if login_maps[envelope_sender] then
+			-- there is user in the login maps, check map
+
+			if login_maps[envelope_sender][final_user] then
+				match_is_good = true
+			end
+		else
+			-- no such user in login maps, fallback to check that envelope and header match
+
+			if final_user == envelope_sender then
+				match_is_good = true
+			end
+		end
+
+		if not match_is_good then
 			smfi_setreply("550", nil, "your user is not allowed to change \"from\" header to: " .. header_value)
-			--smfi_setreply("550", nil, "your user is not allowed to change \"from\" header to: " .. header_value .. ", envelope sender: " .. sender .. ", final user: " .. final_user)
 			return SMFIS_REJECT
 		end
     end
