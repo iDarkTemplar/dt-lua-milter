@@ -1,0 +1,45 @@
+dt-lua-milter is a mail filter based on libmilter which allows to run custom lua scripts to filter the email
+
+Currently dt-lua-milter registers itself as read-only filter, i.e. doesn't modify the message.
+
+Current default script "scripts/default.lua" checks that sender header address and sender envelope address comply following rules:
+	1) if sender header address is present in aliases file, then sender envelope address must match one of aliases from this file
+	2) if sender header address isn't present in aliases file, then sender envelope address must match sender header address
+
+Alias file is in postfix-compatible format: each line contains a list of addresses separated by delimiter: one of space characters or comma,
+	first address being main email address and all other addresses being it's aliases.
+	For more info see Postfix manual for smtpd_sender_login_maps.
+
+Lua functions currently called:
+	mlfi_connect(hostname)
+	mlfi_helo(helohost)
+	mlfi_envfrom(...)
+	mlfi_envrcpt(...)
+	mlfi_header(header, header_value)
+	mlfi_eoh()
+	mlfi_body(body, body_len)
+	mlfi_eom()
+	mlfi_abort()
+	mlfi_close()
+	mlfi_unknown(cmd)
+	mlfi_data()
+
+Each of these function is required to return one of registered SMFIS_* values.
+
+Currently registered functions:
+	smfi_stop
+	smfi_getsymval
+	smfi_setreply
+
+Currently registered values:
+	SMFIS_CONTINUE
+	SMFIS_REJECT
+	SMFIS_DISCARD
+	SMFIS_ACCEPT
+	SMFIS_TEMPFAIL
+	SMFIS_SKIP
+	SMFIS_NOREPLY
+	MI_SUCCESS
+	MI_FAILURE
+
+For more information please look at libmilter documentation
