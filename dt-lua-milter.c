@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 i.Dark_Templar <darktemplar@dark-templar-archives.net>
+ * Copyright (C) 2016-2019 i.Dark_Templar <darktemplar@dark-templar-archives.net>
  *
  * This file is part of DT Lua Milter.
  *
@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <strings.h>
 
 #include <sysexits.h>
 
@@ -491,7 +492,7 @@ sfsistat dt_mlfi_body(
 		return dt_smfi_fail(ctx);
 	}
 
-	lua_pushlstring(private_context->lua, bodyp, bodylen);
+	lua_pushlstring(private_context->lua, (const char*) bodyp, bodylen);
 	lua_pushinteger(private_context->lua, bodylen);
 	lua_result = lua_pcall(private_context->lua, 2, 1, 0);
 	if (lua_result != 0)
