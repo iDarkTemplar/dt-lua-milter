@@ -1,22 +1,11 @@
-project(DT-Lua-Milter)
+project(DT-Lua-Milter C)
 
 cmake_minimum_required( VERSION 2.8.8 )
 
 set(DLM_VERSION_MAJOR 0)
 set(DLM_VERSION_MINOR 1)
-set(DLM_VERSION_PATCH 3)
+set(DLM_VERSION_PATCH 4)
 set(DLM_VERSION "${DLM_VERSION_MAJOR}.${DLM_VERSION_MINOR}.${DLM_VERSION_PATCH}")
-
-set(CPACK_PACKAGE_VERSION_MAJOR ${DLM_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${DLM_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${DLM_VERSION_PATCH})
-set(CPACK_GENERATOR "TBZ2")
-set(CPACK_SOURCE_GENERATOR "TBZ2")
-set(CPACK_SOURCE_IGNORE_FILES
-	".git;build;CMakeLists.txt.user;CMakeLists.txt.user.*;TODO")
-set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${DLM_VERSION}")
-# MUST be after CPACK_* variables.
-include(CPack)
 
 # installation directory configuration
 set(CONFIG_DIR "/etc" CACHE PATH "Config files directory")
@@ -33,14 +22,7 @@ set(DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Prefix prepended to 
 # hack to use my milter search module
 SET( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake_extra )
 
-message(STATUS "System: ${CMAKE_SYSTEM_NAME}" )
-
 add_definitions(-DCONFIG_DIR=\"${CONFIG_DIR}\")
-
-if (UNIX)
-	set( CMAKE_THREAD_PREFER_PTHREAD 1 )
-endif (UNIX)
-find_package (Threads REQUIRED)
 
 find_package (Milter REQUIRED)
 find_package (Lua REQUIRED)
@@ -64,7 +46,7 @@ set ( SOURCES dt-lua-milter.c )
 set ( HEADERS )
 
 add_executable( dt-lua-milter ${SOURCES} ${HEADERS})
-target_link_libraries( dt-lua-milter ${MILTER_LIBRARIES} ${LUA_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+target_link_libraries( dt-lua-milter ${MILTER_LIBRARIES} ${LUA_LIBRARIES} )
 
 # installation config
 install(TARGETS dt-lua-milter RUNTIME DESTINATION ${SBIN_INSTALL_DIR})
